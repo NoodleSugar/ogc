@@ -10,8 +10,7 @@ pub struct GetCapabilitiesRequest;
 
 impl GetCapabilitiesRequest {
 	pub fn parameters(&self) -> Vec<(&str, &str)> {
-		const SERVICE: &str = "WMTS";
-		vec![("service", SERVICE), ("request", "GetCapabilities")]
+		vec![("service", "WMTS"), ("request", "GetCapabilities")]
 	}
 }
 
@@ -46,6 +45,8 @@ pub struct Layer {
 pub struct Style {
 	#[serde(rename = "@isDefault")]
 	pub is_default: Option<bool>,
+	#[serde(rename = "Identifier")]
+	pub identifier: String,
 }
 
 #[derive(Debug, Deserialize)]
