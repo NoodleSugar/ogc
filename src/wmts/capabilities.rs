@@ -10,8 +10,7 @@ pub struct GetCapabilitiesRequest;
 
 impl GetCapabilitiesRequest {
 	pub fn parameters(&self) -> Vec<(&str, &str)> {
-		const SERVICE: &str = "WMTS";
-		vec![("service", SERVICE), ("request", "GetCapabilities")]
+		vec![("service", "WMTS"), ("request", "GetCapabilities")]
 	}
 }
 
