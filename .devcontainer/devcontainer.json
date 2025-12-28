@@ -1,0 +1,20 @@
+{
+	"name": "Ubuntu Dev",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"remoteUser": "ubuntu",
+	"mounts": [
+		"type=bind,readonly,source=${localEnv:HOME}/.ssh/,target=/home/ubuntu/.ssh/",
+		"type=bind,readonly,source=${localEnv:HOME}/.gitconfig,target=/home/ubuntu/.gitconfig"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"rust-lang.rust-analyzer",
+				"tamasfe.even-better-toml",
+				"vadimcn.vscode-lldb"
+			]
+		}
+	}
+}
