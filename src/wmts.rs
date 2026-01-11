@@ -1,9 +1,13 @@
 pub mod capabilities;
+pub mod tile;
 
 use reqwest::{Client, Url};
 use thiserror::Error;
 
-use crate::wmts::capabilities::{Capabilities, GetCapabilitiesRequest};
+use crate::wmts::{
+	capabilities::{Capabilities, GetCapabilitiesRequest},
+	tile::{GetTileRequest, Tile},
+};
 
 pub struct WmtsClient {
 	client: Client,
@@ -32,6 +36,25 @@ impl WmtsClient {
 
 		Ok(result)
 	}
+
+	pub async fn get_tile(&self, request: &GetTileRequest) -> Result<Tile> {
+		let response = self
+			.client
+			.get(self.url.clone())
+			.query(&request.parameters())
+			.send()
+			.await?
+			.error_for_status()?;
+
+		let content = response.bytes().await?;
+
+		let result = Tile {
+			format: request.format.clone(),
+			bytes: content.into(),
+		};
+
+		Ok(result)
+	}
 }
 
 #[derive(Debug, Error)]
@@ -43,3 +66,5 @@ pub enum Error {
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
+
+const SERVICE: &str = "WMTS";
