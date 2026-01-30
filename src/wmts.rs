@@ -9,6 +9,7 @@ use crate::wmts::{
 	tile::{GetTileRequest, Tile},
 };
 
+#[derive(Debug, Clone)]
 pub struct WmtsClient {
 	client: Client,
 	url: Url,

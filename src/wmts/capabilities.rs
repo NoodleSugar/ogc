@@ -15,20 +15,20 @@ impl GetCapabilitiesRequest {
 }
 
 /// https://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Capabilities {
 	pub service_identification: ServiceIdentification,
 	pub contents: ContentsType,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct ContentsType {
 	#[serde(rename = "Layer")]
 	pub layers: Vec<Layer>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Layer {
 	pub identifier: CodeType,
@@ -41,7 +41,7 @@ pub struct Layer {
 	pub tile_matrix_set_link: Vec<TileMatrixSetLink>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct Style {
 	pub identifier: String,
@@ -49,20 +49,20 @@ pub struct Style {
 	pub is_default: Option<bool>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct TileMatrixSetLink {
 	pub tile_matrix_set: String,
 	pub tile_matrix_set_limits: Option<TileMatrixSetLimits>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct TileMatrixSetLimits {
 	pub tile_matrix_limits: Vec<TileMatrixLimits>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct TileMatrixLimits {
 	pub tile_matrix: String,

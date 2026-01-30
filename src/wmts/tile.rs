@@ -1,4 +1,5 @@
 /// https://schemas.opengis.net/wmts/1.0/wmtsGetTile_request.xsd
+#[derive(Debug, Clone)]
 pub struct GetTileRequest {
 	pub layer: String,
 	pub style: String,
@@ -9,6 +10,7 @@ pub struct GetTileRequest {
 	pub tile_col: u64,
 }
 
+#[derive(Debug, Clone)]
 pub struct Tile {
 	pub bytes: Vec<u8>,
 }

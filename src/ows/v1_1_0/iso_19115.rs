@@ -2,7 +2,7 @@
 
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct LanguageStringType {
 	#[serde(rename = "@xml:lang")]
 	pub lang: Option<String>,
@@ -10,13 +10,13 @@ pub struct LanguageStringType {
 	pub value: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct KeywordsType {
 	#[serde(rename = "Keyword")]
 	pub keywords: Vec<LanguageStringType>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct CodeType {
 	#[serde(rename = "codeSpace")]
 	pub code_space: Option<String>,

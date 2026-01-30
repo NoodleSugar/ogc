@@ -6,7 +6,7 @@ use super::iso_19115::{KeywordsType, LanguageStringType};
 
 /// https://schemas.opengis.net/ows/1.1.0/owsServiceIdentification.xsd
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct ServiceIdentification {
 	#[serde(default, rename = "Title")]
 	pub titles: Vec<LanguageStringType>,
