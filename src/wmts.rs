@@ -22,7 +22,7 @@ impl WmtsClient {
 		Self { client, url }
 	}
 
-	pub async fn get_capabilities(&self) -> Result<Capabilities> {
+	pub async fn get_capabilities(&self) -> WmtsResult<Capabilities> {
 		let response = self
 			.client
 			.get(self.url.clone())
@@ -38,7 +38,7 @@ impl WmtsClient {
 		Ok(result)
 	}
 
-	pub async fn get_tile(&self, request: GetTileRequest) -> Result<Tile> {
+	pub async fn get_tile(&self, request: GetTileRequest) -> WmtsResult<Tile> {
 		let response = self
 			.client
 			.get(self.url.clone())
@@ -54,13 +54,13 @@ impl WmtsClient {
 }
 
 #[derive(Debug, Error)]
-pub enum Error {
+pub enum WmtsError {
 	#[error("Request error: {0}")]
 	Request(#[from] reqwest::Error),
 	#[error("Deserialize error: {0}")]
 	Deserialize(#[from] quick_xml::DeError),
 }
 
-pub type Result<T> = std::result::Result<T, Error>;
+pub type WmtsResult<T> = std::result::Result<T, WmtsError>;
 
 const SERVICE: &str = "WMTS";
