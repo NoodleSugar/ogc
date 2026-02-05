@@ -1,13 +1,13 @@
-use ogc::wmts::WmtsClient;
+use ogc::{OgcClient, wmts::capabilities::GetCapabilitiesRequest};
 
 const GEOPF_URL: &str = "https://data.geopf.fr/wmts";
 
 #[tokio::test]
 async fn get_capabilities_request_should_succeed() {
 	let url = GEOPF_URL.parse().unwrap();
-	let client = WmtsClient::new(url);
+	let client = OgcClient::new(url);
 
-	let result = client.get_capabilities().await;
+	let result = GetCapabilitiesRequest.send(&client).await;
 
 	assert!(result.is_ok());
 }

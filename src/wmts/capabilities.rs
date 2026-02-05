@@ -1,16 +1,27 @@
 use serde::Deserialize;
 
-use crate::ows::v1_1_0::{
-	iso_19115::{CodeType, LanguageStringType},
-	service_identification::ServiceIdentification,
+use crate::{
+	OgcClient, OgcResult,
+	ows::v1_1_0::{
+		iso_19115::{CodeType, LanguageStringType},
+		service_identification::ServiceIdentification,
+	},
 };
 
 /// https://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_request.xsd
 pub struct GetCapabilitiesRequest;
 
 impl GetCapabilitiesRequest {
-	pub fn parameters(&self) -> Vec<(&str, &str)> {
-		vec![("service", super::SERVICE), ("request", "GetCapabilities")]
+	const PARAMETERS: &[(&str, &str)] =
+		&[("service", super::SERVICE), ("request", "GetCapabilities")];
+
+	pub async fn send(self, client: &OgcClient) -> OgcResult<Capabilities> {
+		let response = client.get(Self::PARAMETERS).await?;
+		let content = response.text().await?;
+
+		let result = quick_xml::de::from_str::<Capabilities>(&content)?;
+
+		Ok(result)
 	}
 }
 
