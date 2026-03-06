@@ -13,7 +13,8 @@
 			"extensions": [
 				"rust-lang.rust-analyzer",
 				"tamasfe.even-better-toml",
-				"vadimcn.vscode-lldb"
+				"vadimcn.vscode-lldb",
+				"fill-labs.dependi"
 			]
 		}
 	}
