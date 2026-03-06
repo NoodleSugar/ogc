@@ -1,4 +1,6 @@
-use crate::{OgcClient, OgcResult};
+use reqwest::{Client, Url};
+
+use crate::{OgcRequest, OgcResult};
 
 /// https://schemas.opengis.net/wmts/1.0/wmtsGetTile_request.xsd
 #[derive(Debug, Clone)]
@@ -18,15 +20,17 @@ pub struct Tile {
 }
 
 impl GetTileRequest {
-	pub async fn send(self, client: &OgcClient) -> OgcResult<Tile> {
-		let response = client.get(&self.parameters()).await?;
+	pub async fn send(self, client: &Client, url: &Url) -> OgcResult<Tile> {
+		let response = self.get(client, url).await?;
 
 		let bytes = response.bytes().await?.to_vec();
 
 		Ok(Tile { bytes })
 	}
+}
 
-	fn parameters(&self) -> Vec<(&str, String)> {
+impl OgcRequest for GetTileRequest {
+	fn parameters(&self) -> Vec<(&'static str, String)> {
 		vec![
 			("service", super::SERVICE.to_string()),
 			("version", "1.0.0".to_string()),

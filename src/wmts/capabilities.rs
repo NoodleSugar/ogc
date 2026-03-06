@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 use crate::{
-	OgcClient, OgcResult,
+	OgcRequest, OgcResult,
 	ows::v1_1_0::{
 		iso_19115::{CodeType, LanguageStringType},
 		service_identification::ServiceIdentification,
@@ -12,16 +12,25 @@ use crate::{
 pub struct GetCapabilitiesRequest;
 
 impl GetCapabilitiesRequest {
-	const PARAMETERS: &[(&str, &str)] =
-		&[("service", super::SERVICE), ("request", "GetCapabilities")];
-
-	pub async fn send(self, client: &OgcClient) -> OgcResult<Capabilities> {
-		let response = client.get(Self::PARAMETERS).await?;
-		let content = response.text().await?;
+	pub async fn send(
+		self,
+		client: &reqwest::Client,
+		url: &reqwest::Url,
+	) -> OgcResult<Capabilities> {
+		let content = self.get(client, url).await?.text().await?;
 
 		let result = quick_xml::de::from_str::<Capabilities>(&content)?;
 
 		Ok(result)
+	}
+}
+
+impl OgcRequest for GetCapabilitiesRequest {
+	fn parameters(&self) -> Vec<(&'static str, String)> {
+		vec![
+			("service", super::SERVICE.to_string()),
+			("request", "GetCapabilities".to_string()),
+		]
 	}
 }
 

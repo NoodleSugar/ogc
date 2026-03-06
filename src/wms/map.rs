@@ -1,4 +1,6 @@
-use crate::{OgcClient, OgcResult};
+use reqwest::{Client, Url};
+
+use crate::{OgcRequest, OgcResult};
 
 pub struct GetMapRequest {
 	layers: Vec<String>,
@@ -37,15 +39,17 @@ impl GetMapRequest {
 		self
 	}
 
-	pub async fn send(self, client: &OgcClient) -> OgcResult<Map> {
-		let response = client.get(&self.parameters()).await?;
+	pub async fn send(self, client: &Client, url: &Url) -> OgcResult<Map> {
+		let response = self.get(client, url).await?;
 
 		let bytes = response.bytes().await?.to_vec();
 
 		Ok(Map { bytes })
 	}
+}
 
-	fn parameters(&self) -> Vec<(&str, String)> {
+impl OgcRequest for GetMapRequest {
+	fn parameters(&self) -> Vec<(&'static str, String)> {
 		let layers = self.layers.join(",");
 		let styles = self.styles.join(",");
 		let (minx, miny, maxx, maxy) = self.bbox;
