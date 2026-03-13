@@ -164,3 +164,41 @@ impl XyOrIj {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use crate::{Bbox, wms::map::GetMapRequestBuilder};
+
+	use super::*;
+
+	#[tokio::test]
+	async fn get_feature_info_for_infoterre() {
+		let url = "https://infoterre.brgm.fr/services/gfi".parse().unwrap();
+
+		let request = GetFeatureInfoRequestBuilder::new(
+			GetMapRequestBuilder::new(
+				"EPSG:4326".to_string(),
+				Bbox {
+					min_lat: "45.34114350490152".to_string(),
+					min_lon: "5.5708309459012835".to_string(),
+					max_lat: "45.359139049544474".to_string(),
+					max_lon: "5.604859964098717".to_string(),
+				},
+				2000,
+				1499,
+				"image/png".to_string(),
+			)
+			.with_layers_and_styles([("SCAN_GEOL50".to_string(), "".to_string())])
+			.build(WmsVersion::V1_1_1),
+			["SCAN_GEOL50".to_string()],
+			1000,
+			750,
+		)
+		.with_feature_count(1)
+		.with_info_format("application/vnd.ogc.gml".to_string())
+		.build();
+
+		let reponse = request.send(&Client::new(), &url).await.unwrap();
+		println!("{}", reponse.text().await.unwrap());
+	}
+}

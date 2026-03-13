@@ -1,5 +1,3 @@
-use derive_more::From;
-
 pub mod feature_info;
 pub mod map;
 
@@ -20,14 +18,6 @@ impl WmsVersion {
 			WmsVersion::V1_3_0 => ("VERSION", "1.3.0".to_string()),
 		}
 	}
-}
-
-#[derive(Clone, From)]
-pub struct Bbox {
-	pub min_lat: String,
-	pub min_lon: String,
-	pub max_lat: String,
-	pub max_lon: String,
 }
 
 #[derive(Clone)]

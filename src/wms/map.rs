@@ -1,8 +1,8 @@
 use reqwest::{Client, Url};
 
-use super::{Bbox, SERVICE, SrsOrCrs, WmsVersion};
+use super::{SERVICE, SrsOrCrs, WmsVersion};
 
-use crate::{OgcRequest, OgcResult};
+use crate::{Bbox, OgcRequest, OgcResult};
 
 pub struct GetMapRequestBuilder {
 	layers: Vec<String>,
